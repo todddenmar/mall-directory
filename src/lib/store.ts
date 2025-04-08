@@ -1,4 +1,4 @@
-import { TFloor, TMediaFile, TSettings, TShop } from "@/types";
+import { TFloor, TSettings, TShop } from "@/types";
 
 import { create } from "zustand";
 

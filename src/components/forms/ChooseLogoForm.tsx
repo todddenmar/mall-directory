@@ -1,5 +1,5 @@
 import { useAppStore } from "@/lib/store";
-import { TMediaFile, TShop } from "@/types";
+import { TShop } from "@/types";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";

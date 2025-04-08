@@ -1,4 +1,4 @@
-import { TCoordinates, TShop } from "@/types";
+import { TShop } from "@/types";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import { useAppStore } from "@/lib/store";
 import { toast } from "sonner";
-import { dbSetDocument } from "@/queries/db-create";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import LoadingComponent from "../custom-ui/LoadingComponent";
 import { dbUpdateDocument } from "@/queries/db-update";

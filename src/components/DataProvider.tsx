@@ -33,6 +33,7 @@ function DataProvider() {
     fetchSettings();
     fetchShops();
     fetchFloors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return null;
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 export default function GestureLayout({ children }: { children: ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,6 +16,9 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
   let startY = 0;
   let scrollLeft = 0;
   let scrollTop = 0;
+
+  const initialPinchDistance = useRef(0);
+  const initialScale = useRef(1);
 
   const clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max);
@@ -55,6 +58,47 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
     setIsDragging(false);
     containerRef.current?.classList.remove("cursor-grabbing");
   };
+
+  // Touch: pinch zoom support
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        initialPinchDistance.current = Math.sqrt(dx * dx + dy * dy);
+        initialScale.current = scale;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const newDistance = Math.sqrt(dx * dx + dy * dy);
+
+        const scaleChange = newDistance / initialPinchDistance.current;
+        const newScale = clamp(
+          initialScale.current * scaleChange,
+          MIN_SCALE,
+          MAX_SCALE
+        );
+        setScale(newScale);
+      }
+    };
+
+    el.addEventListener("touchstart", handleTouchStart, { passive: false });
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      el.removeEventListener("touchstart", handleTouchStart);
+      el.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [scale]);
 
   return (
     <div

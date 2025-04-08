@@ -10,7 +10,7 @@ function FloorsList() {
  
   if (!currentFloorSelected) return <div>No Floor Selected</div>;
   return (
-    <section className="grid md:grid-cols-2 bg-white p-4 md:p-6 rounded-lg gap-4 justify-between">
+    <section className="grid  bg-white p-4 md:p-6 rounded-lg gap-4 justify-between">
       <div className="space-y-2 md:space-y-4">
         <div className="font-medium text-lg md:text-5xl">
           {currentFloorSelected.name}

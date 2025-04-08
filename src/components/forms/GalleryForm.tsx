@@ -48,11 +48,14 @@ function GalleryForm() {
       })
     );
 
+    const prevImages = currentSettings.galleryImages || [];
+    const updatedImages = [...prevImages, ...newImages];
+
     const res = await dbUpdateDocument(DB_COLLECTION.ROOT, "settings", {
-      galleryImages: newImages,
+      galleryImages: updatedImages,
     });
     if (res.status === DB_METHOD_STATUS.SUCCESS) {
-      const updatedEvent = { ...currentSettings, galleryImages: newImages };
+      const updatedEvent = { ...currentSettings, galleryImages: updatedImages };
       setCurrentSettings(updatedEvent);
       toast.success("Images Saved");
     }

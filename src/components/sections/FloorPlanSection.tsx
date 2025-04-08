@@ -24,6 +24,13 @@ function FloorPlanSection() {
   const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const clickedInside = target.closest("#floormap");
+
+    if (!clickedInside) {
+      console.log("Clicked outside of floormap — ignoring");
+      return;
+    }
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -40,7 +47,8 @@ function FloorPlanSection() {
     <div className="flex flex-col flex-1 overflow-auto gap-4">
       <GestureLayout>
         <div
-          className="relative scale-50 md:scale-100 w-[800px] aspect-square "
+          id="floormap"
+          className="relative scale-100 w-[800px] aspect-square "
           onClick={isEditing ? handleClick : () => null}
         >
           {coords && isEditing ? (

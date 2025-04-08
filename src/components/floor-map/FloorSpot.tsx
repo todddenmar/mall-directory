@@ -19,13 +19,34 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import ChooseLogoForm from "../forms/ChooseLogoForm";
 import Image from "next/image";
 import { Protect } from "@clerk/nextjs";
+import ConfirmationDialog from "../custom-ui/ConfirmationDialog";
+import { useAppStore } from "@/lib/store";
+import { dbDeleteDocument } from "@/queries/db-delete";
+import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
+import { toast } from "sonner";
 type FloorSpotProps = {
   shop: TShop;
 };
 function FloorSpot({ shop }: FloorSpotProps) {
+  const { currentShops, setCurrentShops } = useAppStore();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenChooseLogo, setIsOpenChooseLogo] = useState(false);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const onDelete = async () => {
+    setIsLoadingDelete(true);
+    const res = await dbDeleteDocument({
+      collection: DB_COLLECTION.SHOPS,
+      id: shop.id,
+    });
+    if (res.status === DB_METHOD_STATUS.SUCCESS) {
+      const updatedShops = currentShops.filter((item) => item.id != shop.id);
+      setCurrentShops(updatedShops);
+      toast.success("Deleted shop successfully");
+    }
+    setIsLoadingDelete(false);
+  };
   return (
     <div
       style={
@@ -61,8 +82,7 @@ function FloorSpot({ shop }: FloorSpotProps) {
             </button>
           ) : (
             <button
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 setIsOpenDropdown(true);
               }}
               key={`floor-spot-item-${shop.id}`}
@@ -91,6 +111,14 @@ function FloorSpot({ shop }: FloorSpotProps) {
               }}
             >
               Change Logo
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setIsOpenDropdown(false);
+                setIsOpenDelete(true);
+              }}
+            >
+              Delete
             </DropdownMenuItem>
           </Protect>
         </DropdownMenuContent>
@@ -121,6 +149,14 @@ function FloorSpot({ shop }: FloorSpotProps) {
           />
         </DialogContent>
       </Dialog>
+      <ConfirmationDialog
+        isOpen={isOpenDelete}
+        title="Delete Shop?"
+        description="This will remove this shop spot"
+        setIsOpen={setIsOpenDelete}
+        isLoading={isLoadingDelete}
+        onConfirm={onDelete}
+      />
     </div>
   );
 }

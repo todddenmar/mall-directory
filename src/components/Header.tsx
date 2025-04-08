@@ -2,8 +2,15 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
-import { ShieldUserIcon } from "lucide-react";
-import { Protect, SignedIn, useAuth, UserButton } from "@clerk/nextjs";
+import { KeyIcon, ShieldUserIcon } from "lucide-react";
+import {
+  Protect,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  useAuth,
+  UserButton,
+} from "@clerk/nextjs";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "@/firebase";
 import {
@@ -39,7 +46,9 @@ function Header() {
   }, [userId]);
   return (
     <nav className="flex items-center gap-4 justify-between p-4 border-b">
-      <Link href={"/"}>Robinsons Pagadian</Link>
+      <Link href={"/"} className="text-sm font-medium">
+        Robinsons PGDN
+      </Link>
 
       <div className="flex items-center gap-4">
         <div className="block md:hidden">
@@ -75,6 +84,11 @@ function Header() {
           </Protect>
           <UserButton />
         </SignedIn>
+        <SignedOut>
+          <SignInButton>
+            <KeyIcon />
+          </SignInButton>
+        </SignedOut>
       </div>
     </nav>
   );

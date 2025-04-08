@@ -139,7 +139,7 @@ export const floors: TFloor[] = [
     id: "second-floor",
     name: "Second Floor",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+      "Lorem Ipsum iss simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
     imageURL: "/images/Second-Floor.png",
   },
   {

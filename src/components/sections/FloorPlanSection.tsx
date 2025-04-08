@@ -40,7 +40,7 @@ function FloorPlanSection() {
     <div className="flex flex-col flex-1 overflow-auto gap-4">
       <GestureLayout>
         <div
-          className="relative w-[800px] aspect-square "
+          className="relative scale-50 md:scale-100 w-[800px] aspect-square "
           onClick={isEditing ? handleClick : () => null}
         >
           {coords && isEditing ? (

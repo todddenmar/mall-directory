@@ -18,6 +18,7 @@ import UpdateShopForm from "../forms/UpdatedShopForm";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import ChooseLogoForm from "../forms/ChooseLogoForm";
 import Image from "next/image";
+import { Protect } from "@clerk/nextjs";
 type FloorSpotProps = {
   shop: TShop;
 };
@@ -73,23 +74,25 @@ function FloorSpot({ shop }: FloorSpotProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>{shop.name}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              setIsOpenDropdown(false);
-              setIsOpenEdit(true);
-            }}
-          >
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              setIsOpenDropdown(false);
-              setIsOpenChooseLogo(true);
-            }}
-          >
-            Change Logo
-          </DropdownMenuItem>
+          <Protect permission="org:admin:access">
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                setIsOpenDropdown(false);
+                setIsOpenEdit(true);
+              }}
+            >
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setIsOpenDropdown(false);
+                setIsOpenChooseLogo(true);
+              }}
+            >
+              Change Logo
+            </DropdownMenuItem>
+          </Protect>
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog open={isOpenEdit} onOpenChange={setIsOpenEdit}>

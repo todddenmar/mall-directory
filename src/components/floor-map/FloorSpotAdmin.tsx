@@ -24,10 +24,10 @@ import { useAppStore } from "@/lib/store";
 import { dbDeleteDocument } from "@/queries/db-delete";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import { toast } from "sonner";
-type FloorSpotProps = {
+type FloorSpotAdminProps = {
   shop: TShop;
 };
-function FloorSpot({ shop }: FloorSpotProps) {
+function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
   const { currentShops, setCurrentShops } = useAppStore();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenChooseLogo, setIsOpenChooseLogo] = useState(false);
@@ -164,4 +164,4 @@ function FloorSpot({ shop }: FloorSpotProps) {
   );
 }
 
-export default FloorSpot;
+export default FloorSpotAdmin;

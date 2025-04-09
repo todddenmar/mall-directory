@@ -14,8 +14,9 @@ import {
 import CreateShopForm from "../forms/CreateShopForm";
 import { MapPinIcon } from "lucide-react";
 import { Protect, SignedIn } from "@clerk/nextjs";
-import FloorSpot from "../floor-map/FloorSpot";
 import GestureLayout from "../layouts/GestureLayout";
+import FloorSpotAdmin from "../floor-map/FloorSpotAdmin";
+import FloorSpotPublic from "../floor-map/FloorSpotPublic";
 
 function FloorPlanSection() {
   const { currentFloorSelected, currentShops } = useAppStore();
@@ -60,7 +61,21 @@ function FloorPlanSection() {
             </span>
           ) : null}
           {floorSpots.map((item) => {
-            return <FloorSpot key={`floor-spot-item-${item.id}`} shop={item} />;
+            if (isEditing) {
+              return (
+                <FloorSpotAdmin
+                  key={`floor-spot-item-${item.id}`}
+                  shop={item}
+                />
+              );
+            } else {
+              return (
+                <FloorSpotPublic
+                  key={`floor-spot-item-${item.id}`}
+                  shop={item}
+                />
+              );
+            }
           })}
           <Image
             alt={name}

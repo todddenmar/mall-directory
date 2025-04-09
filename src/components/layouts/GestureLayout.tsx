@@ -124,7 +124,7 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUpOrLeave}
       onMouseLeave={onMouseUpOrLeave}
-      className="w-full aspect-square md:h-fit overflow-scroll cursor-grab select-none border md:border-0 md:overflow-auto"
+      className="w-full aspect-square md:h-fit overflow-scroll cursor-grab select-none md:border-0 md:overflow-auto"
     >
       <div
         ref={contentRef}

@@ -54,7 +54,7 @@ function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
           onDoubleClick={() => {
             setIsOpenShop(true);
           }}
-          className=" bg-red-500 text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
+          className=" bg-black text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
         >
           {shop.name}
         </button>

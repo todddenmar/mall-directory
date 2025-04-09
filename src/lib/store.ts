@@ -1,4 +1,4 @@
-import { TFloor, TSettings, TShop } from "@/types";
+import { TCategory, TFloor, TSettings, TShop } from "@/types";
 
 import { create } from "zustand";
 
@@ -7,6 +7,7 @@ export type TAppStoreStates = {
   currentFloorSelected: TFloor | null;
   currentFloors: TFloor[];
   currentShops: TShop[];
+  currentCategories: TCategory[];
 };
 
 export type TAppStoreActions = {
@@ -14,6 +15,7 @@ export type TAppStoreActions = {
   setCurrentFloorSelected: (currentFloorSelected: TFloor | null) => void;
   setCurrentFloors: (currentFloors: TFloor[]) => void;
   setCurrentShops: (currentShops: TShop[]) => void;
+  setCurrentCategories: (currentCategories: TCategory[]) => void;
 };
 export const useAppStore = create<TAppStoreStates & TAppStoreActions>(
   (set) => ({
@@ -28,5 +30,8 @@ export const useAppStore = create<TAppStoreStates & TAppStoreActions>(
     setCurrentFloors: (currentFloors) => set(() => ({ currentFloors })),
     currentShops: [],
     setCurrentShops: (currentShops) => set(() => ({ currentShops })),
+    currentCategories: [],
+    setCurrentCategories: (currentCategories) =>
+      set(() => ({ currentCategories })),
   })
 );

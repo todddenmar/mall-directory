@@ -11,6 +11,7 @@ function DataProvider() {
     setCurrentFloorSelected,
     setCurrentShops,
     setCurrentSettings,
+    setCurrentCategories,
   } = useAppStore();
   useEffect(() => {
     const fetchSettings = async () => {
@@ -25,6 +26,12 @@ function DataProvider() {
         setCurrentShops(res.data as TShop[]);
       }
     };
+    const fetchCategories = async () => {
+      const res = await dbFetchCollection(DB_COLLECTION.CATEGORIES);
+      if (res.data) {
+        setCurrentCategories(res.data as TShop[]);
+      }
+    };
 
     const fetchFloors = async () => {
       setCurrentFloors(floors);
@@ -32,6 +39,7 @@ function DataProvider() {
     };
     fetchSettings();
     fetchShops();
+    fetchCategories();
     fetchFloors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

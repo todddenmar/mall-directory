@@ -2,8 +2,6 @@
 import { useAppStore } from "@/lib/store";
 import Image from "next/image";
 import React, { useState } from "react";
-import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
 import {
   Dialog,
   DialogContent,
@@ -13,14 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import CreateShopForm from "../forms/CreateShopForm";
 import { MapPinIcon } from "lucide-react";
-import { Protect, SignedIn } from "@clerk/nextjs";
 import GestureLayout from "../layouts/GestureLayout";
 import FloorSpotAdmin from "../floor-map/FloorSpotAdmin";
-import FloorSpotPublic from "../floor-map/FloorSpotPublic";
 
 function FloorPlanSection() {
   const { currentFloorSelected, currentShops } = useAppStore();
-  const [isEditing, setIsEditing] = useState(false);
   const [isOpenCreate, setIsOpenCreate] = useState(false);
   const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
 
@@ -45,14 +40,14 @@ function FloorPlanSection() {
   );
 
   return (
-    <div className="flex flex-col flex-1 overflow-auto gap-4 bg-slate-400 rounded-lg p-4 border">
+    <div className="flex flex-col w-fit flex-1 overflow-auto gap-4 bg-white md:rounded-lg md:p-4 md:border">
       <GestureLayout>
         <div
           id="floormap"
-          className="relative scale-100 w-[800px] aspect-square "
-          onClick={isEditing ? handleClick : () => null}
+          className="relative scale-100 w-[800px] aspect-square bg-neutral-200"
+          onClick={handleClick}
         >
-          {coords && isEditing ? (
+          {coords ? (
             <span
               className="-ml-[9px] -mt-[9px] text-red-500"
               style={{ left: coords.x, top: coords.y, position: "absolute" }}
@@ -60,23 +55,9 @@ function FloorPlanSection() {
               <MapPinIcon size={18} />
             </span>
           ) : null}
-          {floorSpots.map((item) => {
-            if (isEditing) {
-              return (
-                <FloorSpotAdmin
-                  key={`floor-spot-item-${item.id}`}
-                  shop={item}
-                />
-              );
-            } else {
-              return (
-                <FloorSpotPublic
-                  key={`floor-spot-item-${item.id}`}
-                  shop={item}
-                />
-              );
-            }
-          })}
+          {floorSpots.map((item) => (
+            <FloorSpotAdmin key={`floor-spot-item-${item.id}`} shop={item} />
+          ))}
           <Image
             alt={name}
             src={imageURL}
@@ -87,21 +68,6 @@ function FloorPlanSection() {
           />
         </div>
       </GestureLayout>
-      <SignedIn>
-        <Protect permission="org:admin:access">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Switch checked={isEditing} onCheckedChange={setIsEditing} />
-              <Label>{isEditing ? "Editing" : "Edit"}</Label>
-            </div>
-            {coords && (
-              <p className="text-sm text-gray-600">
-                X: {coords.x.toFixed(0)}, Y: {coords.y.toFixed(0)}
-              </p>
-            )}
-          </div>
-        </Protect>
-      </SignedIn>
 
       <Dialog
         open={isOpenCreate}

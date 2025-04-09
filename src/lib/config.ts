@@ -33,6 +33,7 @@ export const DB_METHOD_STATUS = {
 
 export const DB_COLLECTION = {
   SHOPS: "shops",
+  CATEGORIES: "categories",
   ROOT: "root",
 };
 

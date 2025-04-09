@@ -28,6 +28,13 @@ export type TSettings = {
   galleryImages?: TMediaFile[];
 };
 export type TCoordinates = { x: number; y: number };
+
+export type TCategory = {
+  id: string;
+  name: string;
+  description?: string;
+  tags?: string;
+};
 export type TShop = {
   id: string;
   floorID: string;
@@ -35,6 +42,7 @@ export type TShop = {
   name: string;
   description?: string;
   imageURL?: string;
+  tags?: string;
 };
 export type TFilePreview = File & { preview: string };
 export type TMediaFile = {

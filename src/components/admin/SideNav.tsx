@@ -1,6 +1,11 @@
 "use client";
 import { TNavLink } from "@/types";
-import { ImagesIcon, LayoutDashboardIcon } from "lucide-react";
+import {
+  ImagesIcon,
+  LayoutDashboardIcon,
+  MapPinnedIcon,
+  StoreIcon,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
@@ -16,6 +21,18 @@ function SideNav() {
       icon: <LayoutDashboardIcon size={18} />,
     },
     {
+      id: "shops",
+      label: "Shops",
+      path: "/admin/shops",
+      icon: <StoreIcon size={18} />,
+    },
+    {
+      id: "map",
+      label: "Map",
+      path: "/admin/map",
+      icon: <MapPinnedIcon size={18} />,
+    },
+    {
       id: "gallery",
       label: "Gallery",
       path: "/admin/gallery",
@@ -23,7 +40,7 @@ function SideNav() {
     },
   ];
   return (
-    <div className="p-4 border rounded-lg flex flex-col gap-2">
+    <div className="p-4 border rounded-lg flex flex-col gap-2 bg-white">
       {adminNav.map((item) => {
         const isActive = pathname === item.path;
         return (

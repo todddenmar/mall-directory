@@ -24,6 +24,15 @@ import { useAppStore } from "@/lib/store";
 import { dbDeleteDocument } from "@/queries/db-delete";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import { toast } from "sonner";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import MoveShopForm from "../forms/MoveShopForm";
+
 type FloorSpotAdminProps = {
   shop: TShop;
 };
@@ -34,6 +43,7 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [isMoving, setIsMoving] = useState(false);
   const onDelete = async () => {
     setIsLoadingDelete(true);
     const res = await dbDeleteDocument({
@@ -88,7 +98,7 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
               onClick={() => {
                 setIsOpenDropdown(true);
               }}
-              className=" bg-red-500 text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
+              className=" bg-black text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
             >
               {shop.name}
             </button>
@@ -98,14 +108,7 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
           <DropdownMenuLabel>{shop.name}</DropdownMenuLabel>
           <Protect permission="org:admin:access">
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                setIsOpenDropdown(false);
-                setIsOpenEdit(true);
-              }}
-            >
-              Edit
-            </DropdownMenuItem>
+
             <DropdownMenuItem
               onClick={() => {
                 setIsOpenDropdown(false);
@@ -121,6 +124,22 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
               }}
             >
               Delete
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setIsOpenDropdown(false);
+                setIsOpenEdit(true);
+              }}
+            >
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setIsOpenDropdown(false);
+                setIsMoving(true);
+              }}
+            >
+              Move
             </DropdownMenuItem>
           </Protect>
         </DropdownMenuContent>
@@ -159,6 +178,17 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
         isLoading={isLoadingDelete}
         onConfirm={onDelete}
       />
+      <Sheet open={isMoving} onOpenChange={setIsMoving}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>{shop.name}</SheetTitle>
+            <SheetDescription>
+              This will change the coordinates of this shop on the map
+            </SheetDescription>
+          </SheetHeader>
+          <MoveShopForm setClose={() => setIsMoving(false)} shop={shop} />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

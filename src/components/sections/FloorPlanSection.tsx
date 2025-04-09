@@ -45,7 +45,7 @@ function FloorPlanSection() {
   );
 
   return (
-    <div className="flex flex-col flex-1 overflow-auto gap-4 bg-white rounded-lg p-4 border">
+    <div className="flex flex-col flex-1 overflow-auto gap-4 bg-slate-400 rounded-lg p-4 border">
       <GestureLayout>
         <div
           id="floormap"

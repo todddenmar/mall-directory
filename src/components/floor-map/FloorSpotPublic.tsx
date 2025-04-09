@@ -7,7 +7,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import Image from "next/image";
@@ -38,7 +37,7 @@ function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
           onDoubleClick={() => {
             setIsOpenShop(true);
           }}
-          className="w-[50px] bg-white aspect-square p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
+          className="w-[50px] bg-white aspect-square border-2 border-white p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
         >
           <Image
             alt={shop.name}

@@ -71,13 +71,16 @@ function FloorSpot({ shop }: FloorSpotProps) {
                 e.stopPropagation();
                 setIsOpenDropdown(true);
               }}
-              className=" w-[50px] aspect-square rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
+              className="w-[50px] bg-white aspect-square p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
             >
               <Image
                 alt={shop.name}
                 src={shop.imageURL}
                 fill
-                className="object-contain"
+                className="object-contain rounded-lg"
+                style={{
+                  overflowClipMargin: "unset",
+                }}
               />
             </button>
           ) : (

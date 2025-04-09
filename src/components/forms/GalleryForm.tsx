@@ -80,7 +80,7 @@ function GalleryForm() {
                   <Image
                     src={item.preview}
                     alt={item.name}
-                    className="object-cover h-full w-full"
+                    className="object-contain h-full w-full"
                     width={160}
                     height={160}
                     style={{
@@ -108,7 +108,7 @@ function GalleryForm() {
                 alt={item.name}
                 width={160}
                 height={160}
-                className="object-cover h-full w-full"
+                className="object-contain h-full w-full"
                 style={{
                   overflowClipMargin: "unset",
                 }}

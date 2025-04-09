@@ -41,7 +41,7 @@ function ChooseLogoForm({ shop, setClose }: ChooseLogoFormProps) {
     setClose();
   };
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 w-full">
       <div>
         <div className="h-[150px] aspect-square rounded-lg bg-neutral-100 flex flex-col items-center justify-center relative overflow-hidden">
           {selectedImageURL ? (
@@ -58,32 +58,34 @@ function ChooseLogoForm({ shop, setClose }: ChooseLogoFormProps) {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 w-full">
         <Label>Choose from gallery:</Label>
-        <div className="border rounded-lg p-4 flex-1 grid grid-cols-4 h-[300px] overflow-y-auto w-full ">
-          {currentSettings.galleryImages?.map((item) => {
-            const isActive = item.url === selectedImageURL;
-            return (
-              <button
-                onClick={() => {
-                  setSelectedImageURL(item.url);
-                }}
-                key={`gallery-item-${item.id}`}
-                className={cn(
-                  "w-full aspect-square relative rounded-lg overflow-hidden",
-                  isActive && "border-2"
-                )}
-              >
-                <Image
-                  alt={item.name}
-                  src={item.url}
-                  fill
-                  sizes="100%"
-                  className="object-contain"
-                />
-              </button>
-            );
-          })}
+        <div className="overflow-y-auto h-[300px]">
+          <div className="border rounded-lg p-4 flex-1 grid grid-cols-4 gap-2 w-full ">
+            {currentSettings.galleryImages?.map((item) => {
+              const isActive = item.url === selectedImageURL;
+              return (
+                <button
+                  onClick={() => {
+                    setSelectedImageURL(item.url);
+                  }}
+                  key={`gallery-item-${item.id}`}
+                  className={cn(
+                    "w-full aspect-square relative rounded-lg overflow-hidden",
+                    isActive && "border-2"
+                  )}
+                >
+                  <Image
+                    alt={item.name}
+                    src={item.url}
+                    fill
+                    sizes="100%"
+                    className="object-contain"
+                  />
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 

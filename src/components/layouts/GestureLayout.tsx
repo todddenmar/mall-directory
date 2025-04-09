@@ -24,12 +24,28 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
     Math.min(Math.max(value, min), max);
 
   const onWheel = (e: React.WheelEvent) => {
-    if (!e.ctrlKey && !e.metaKey) return; // only zoom if holding ctrl/cmd
+    if (!e.ctrlKey && !e.metaKey) return;
     e.preventDefault();
+
+    const el = containerRef.current;
+    if (!el) return;
 
     const zoomSpeed = 0.0015;
     const newScale = clamp(scale - e.deltaY * zoomSpeed, MIN_SCALE, MAX_SCALE);
+
+    const rect = el.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left + el.scrollLeft;
+    const offsetY = e.clientY - rect.top + el.scrollTop;
+
+    const zoomFactor = newScale / scale;
+
     setScale(newScale);
+
+    // Scroll to keep zoom centered around the pointer
+    requestAnimationFrame(() => {
+      el.scrollLeft = offsetX * zoomFactor - (e.clientX - rect.left);
+      el.scrollTop = offsetY * zoomFactor - (e.clientY - rect.top);
+    });
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
@@ -114,7 +130,7 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
         ref={contentRef}
         style={{
           transform: `scale(${scale})`,
-          transformOrigin: "top left",
+          transformOrigin: "center center",
         }}
         className="transition-transform duration-100 ease-out"
       >

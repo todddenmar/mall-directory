@@ -88,7 +88,6 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
               onClick={() => {
                 setIsOpenDropdown(true);
               }}
-              key={`floor-spot-item-${shop.id}`}
               className=" bg-red-500 text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
             >
               {shop.name}

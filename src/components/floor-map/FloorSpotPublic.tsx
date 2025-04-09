@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TShop } from "@/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import Image from "next/image";
 
@@ -8,6 +16,7 @@ type FloorSpotPublicProps = {
   shop: TShop;
 };
 function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
+  const [isOpenShop, setIsOpenShop] = useState(false);
   return (
     <div
       style={
@@ -26,8 +35,8 @@ function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
     >
       {shop.imageURL ? (
         <button
-          onClick={(e) => {
-            e.stopPropagation();
+          onDoubleClick={() => {
+            setIsOpenShop(true);
           }}
           className="w-[50px] bg-white aspect-square p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
         >
@@ -43,12 +52,22 @@ function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
         </button>
       ) : (
         <button
-          key={`floor-spot-item-${shop.id}`}
+          onDoubleClick={() => {
+            setIsOpenShop(true);
+          }}
           className=" bg-red-500 text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
         >
           {shop.name}
         </button>
       )}
+      <Dialog open={isOpenShop} onOpenChange={setIsOpenShop}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{shop.name}</DialogTitle>
+            <DialogDescription>{shop.description}</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

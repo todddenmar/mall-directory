@@ -1,21 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { TShop } from "@/types";
+
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import Image from "next/image";
+import { ArrowDownIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type FloorSpotPublicProps = {
   shop: TShop;
+  isActive?: boolean;
 };
-function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
-  const [isOpenShop, setIsOpenShop] = useState(false);
+function FloorSpotPublic({ shop, isActive }: FloorSpotPublicProps) {
   return (
     <div
       style={
@@ -32,41 +33,41 @@ function FloorSpotPublic({ shop }: FloorSpotPublicProps) {
             }
       }
     >
-      {shop.imageURL ? (
-        <button
-          onDoubleClick={() => {
-            setIsOpenShop(true);
-          }}
-          className="w-[50px] bg-white aspect-square border-2 border-white p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
+      <Popover open={isActive}>
+        <PopoverTrigger asChild>
+          {shop.imageURL ? (
+            <div
+              className={cn(
+                "w-[50px] relative bg-white aspect-square border-2 border-white p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100",
+                isActive ? "z-20 " : "z-10"
+              )}
+            >
+              <Image
+                alt={shop.name}
+                src={shop.imageURL}
+                fill
+                sizes="100%"
+                className={cn("object-contain rounded-lg")}
+                style={{
+                  overflowClipMargin: "unset",
+                }}
+              />
+            </div>
+          ) : (
+            <div className=" bg-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10">
+              {shop.name}
+            </div>
+          )}
+        </PopoverTrigger>
+        <PopoverContent
+          side="top"
+          className="p-2 bg-transparent shadow-none  border-none w-fit"
         >
-          <Image
-            alt={shop.name}
-            src={shop.imageURL}
-            fill
-            className="object-contain rounded-lg"
-            style={{
-              overflowClipMargin: "unset",
-            }}
-          />
-        </button>
-      ) : (
-        <button
-          onDoubleClick={() => {
-            setIsOpenShop(true);
-          }}
-          className=" bg-black text-white cursor-pointer rounded-sm text-sm flex items-center gap-2 px-2 py-1 z-10"
-        >
-          {shop.name}
-        </button>
-      )}
-      <Dialog open={isOpenShop} onOpenChange={setIsOpenShop}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{shop.name}</DialogTitle>
-            <DialogDescription>{shop.description}</DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+          <div className="animate-bounce bg-red-600 text-white rounded-full p-2">
+            <ArrowDownIcon />
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

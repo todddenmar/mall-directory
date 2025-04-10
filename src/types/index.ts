@@ -37,6 +37,7 @@ export type TCategory = {
 };
 export type TShop = {
   id: string;
+  categoryID?: string;
   floorID: string;
   coordinates: TCoordinates;
   name: string;

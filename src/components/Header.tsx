@@ -13,21 +13,7 @@ import {
 } from "@clerk/nextjs";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "@/firebase";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useAppStore } from "@/lib/store";
 function Header() {
-  const { currentFloors, currentFloorSelected, setCurrentFloorSelected } =
-    useAppStore();
-  const onChangeFloor = (val: string) => {
-    const selected = currentFloors.find((item) => item.id === val);
-    if (selected) setCurrentFloorSelected(selected);
-  };
   const { getToken, userId } = useAuth();
   const signIntoFirebaseWithClerk = async () => {
     const token = await getToken({ template: "integration_firebase" });
@@ -51,28 +37,6 @@ function Header() {
       </Link>
 
       <div className="flex items-center gap-4">
-        <div className="block md:hidden">
-          <Select
-            value={currentFloorSelected?.id}
-            onValueChange={onChangeFloor}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select Floor" />
-            </SelectTrigger>
-            <SelectContent>
-              {currentFloors.map((item) => {
-                return (
-                  <SelectItem
-                    key={`select-item-floor-${item.id}`}
-                    value={item.id}
-                  >
-                    {item.name}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-        </div>
         <SignedIn>
           <Protect permission="org:admin:access">
             <Link href={"/admin"}>

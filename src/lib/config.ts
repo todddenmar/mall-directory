@@ -124,28 +124,28 @@ export const PH_PROVINCES: string[] = [
 export const floors: TFloor[] = [
   {
     id: "lower-ground-floor",
-    name: "Lower Ground Floor",
+    name: "Lower Ground",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
     imageURL: "/images/Lower-Ground-Floor.png",
   },
   {
     id: "upper-ground-floor",
-    name: "Upper Ground Floor",
+    name: "Upper Ground",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
     imageURL: "/images/Upper-Ground-Floor.png",
   },
   {
     id: "second-floor",
-    name: "Second Floor",
+    name: "Level 2",
     description:
       "Lorem Ipsum iss simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
     imageURL: "/images/Second-Floor.png",
   },
   {
     id: "third-floor",
-    name: "Third Floor",
+    name: "Level 3",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
     imageURL: "/images/Third-Floor.png",

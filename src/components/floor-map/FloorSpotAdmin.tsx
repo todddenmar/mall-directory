@@ -14,7 +14,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { TShop } from "@/types";
-import UpdateShopForm from "../forms/UpdatedShopForm";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import ChooseLogoForm from "../forms/ChooseLogoForm";
 import Image from "next/image";
@@ -32,6 +31,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import MoveShopForm from "../forms/MoveShopForm";
+import UpdateShopForm from "../forms/UpdateShopForm";
 
 type FloorSpotAdminProps = {
   shop: TShop;
@@ -81,12 +81,13 @@ function FloorSpotAdmin({ shop }: FloorSpotAdminProps) {
                 e.stopPropagation();
                 setIsOpenDropdown(true);
               }}
-              className="w-[50px] bg-white aspect-square p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
+              className="w-[50px] bg-white aspect-square relative p-2 rounded-lg z-10 overflow-hidden hover:scale-200 hover:z-20 transition duration-100"
             >
               <Image
                 alt={shop.name}
                 src={shop.imageURL}
                 fill
+                sizes="100%"
                 className="object-contain rounded-lg"
                 style={{
                   overflowClipMargin: "unset",

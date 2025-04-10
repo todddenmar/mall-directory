@@ -1,4 +1,4 @@
-import { TShop } from "@/types";
+import { TCategory } from "@/types";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,21 +24,24 @@ import { dbUpdateDocument } from "@/queries/db-update";
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   description: z.string().optional(),
+  tags: z.string().optional(),
 });
 
-type UpdateShopFormProps = {
-  shop: TShop;
+type UpdateCategoryFormProps = {
+  category: TCategory;
   setClose: () => void;
 };
-function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
-  const { currentFloorSelected, currentShops, setCurrentShops } = useAppStore();
+function UpdateCategoryForm({ setClose, category }: UpdateCategoryFormProps) {
+  const { currentFloorSelected, currentCategories, setCurrentCategories } =
+    useAppStore();
   const [isLoading, setIsLoading] = useState(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: shop.name,
-      description: shop.description,
+      name: category.name,
+      description: category.description || "",
+      tags: category.tags || "",
     },
   });
 
@@ -48,22 +51,27 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
     // ✅ This will be type-safe and validated.
     if (!currentFloorSelected) return;
     setIsLoading(true);
-    const { name, description } = values;
-    const updatedShop: TShop = {
-      ...shop,
+    const { name, description, tags } = values;
+    const updates = {
       name: name.trim(),
-      description: description,
+      description: description?.trim() || "",
+      tags: tags?.trim() || "",
     };
-    const res = await dbUpdateDocument(DB_COLLECTION.SHOPS, updatedShop.id, {
-      name: name.trim(),
-      description: description,
-    });
+    const updatedCategory: TCategory = {
+      ...category,
+      ...updates,
+    };
+    const res = await dbUpdateDocument(
+      DB_COLLECTION.CATEGORIES,
+      category.id,
+      updates
+    );
     if (res.status === DB_METHOD_STATUS.SUCCESS) {
-      const updatedShops = currentShops.map((item) =>
-        item.id === shop.id ? updatedShop : item
+      const updatedCategories = currentCategories.map((item) =>
+        item.id === category.id ? updatedCategory : item
       );
-      setCurrentShops(updatedShops);
-      toast.success("Shop updated successfully!");
+      setCurrentCategories(updatedCategories);
+      toast.success("Category updated successfully!");
     } else {
       toast.error(res.message);
     }
@@ -81,7 +89,7 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Shop name" {...field} />
+                  <Input placeholder="Category name" {...field} />
                 </FormControl>
                 <FormDescription>
                   This is the public display name.
@@ -98,11 +106,25 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Tell us a little bit about the spot"
+                    placeholder="Tell us a little bit about the category"
                     className="resize-none"
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tags</FormLabel>
+                <FormControl>
+                  <Input placeholder="drinks, food, etc" {...field} />
+                </FormControl>
+                <FormDescription>Please split items by comma.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -118,4 +140,4 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
   );
 }
 
-export default UpdateShopForm;
+export default UpdateCategoryForm;

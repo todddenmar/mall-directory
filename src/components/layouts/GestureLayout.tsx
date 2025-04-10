@@ -124,7 +124,7 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUpOrLeave}
       onMouseLeave={onMouseUpOrLeave}
-      className="w-full aspect-square md:h-fit overflow-scroll cursor-grab select-none md:border-0 md:overflow-auto"
+      className="w-full aspect-square md:h-fit overflow-scroll cursor-grab select-none md:border-0 md:overflow-auto bg-neutral-400"
     >
       <div
         ref={contentRef}
@@ -132,7 +132,7 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
           transform: `scale(${scale})`,
           transformOrigin: "center center",
         }}
-        className="transition-transform duration-100 ease-out"
+        className="transition-transform duration-100 ease-out "
       >
         {children}
       </div>

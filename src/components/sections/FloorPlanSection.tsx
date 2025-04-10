@@ -44,7 +44,7 @@ function FloorPlanSection() {
       <GestureLayout>
         <div
           id="floormap"
-          className="relative scale-100 w-[800px] aspect-square bg-neutral-200"
+          className="relative scale-100 w-[800px] aspect-square "
           onClick={handleClick}
         >
           {coords ? (

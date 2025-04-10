@@ -31,12 +31,13 @@ function Header() {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
   return (
-    <nav className="flex items-center gap-4 justify-between p-4 border-b">
+    <nav className="flex items-center gap-4 justify-between p-4 border-b w-full bg-neutral-100 z-20">
       <Link href={"/"} className="text-sm font-medium">
         Robinsons PGDN
       </Link>
 
       <div className="flex items-center gap-4">
+        <div className="text-sm">By Todd Mendiola</div>
         <SignedIn>
           <Protect permission="org:admin:access">
             <Link href={"/admin"}>

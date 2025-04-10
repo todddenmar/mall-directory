@@ -10,8 +10,8 @@ function AdminMapPage() {
 
   if (!currentFloorSelected) return <div>No Floor Selected</div>;
   return (
-    <div className="flex gap-4 bg-white p-4 rounded-lg border flex-1">
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col lg:flex-row gap-4 bg-white p-4 rounded-lg border flex-1">
+      <div className="flex items-center lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0">
         {currentFloors
           .map((item) => {
             const isActive = item.id === currentFloorSelected.id;
@@ -27,7 +27,7 @@ function AdminMapPage() {
           })
           .reverse()}
       </div>
-      <div className="flex-1">
+      <div className="flex-1 overflow-auto">
         <FloorPlanSection />
       </div>
     </div>

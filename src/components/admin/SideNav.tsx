@@ -40,7 +40,7 @@ function SideNav() {
     },
   ];
   return (
-    <div className="p-4 border rounded-lg flex flex-col gap-2 bg-white">
+    <div className="p-4 border rounded-lg flex lg:flex-col gap-2 bg-white overflow-x-auto">
       {adminNav.map((item) => {
         const isActive = pathname === item.path;
         return (

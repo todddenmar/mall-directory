@@ -17,6 +17,7 @@ function AdminMapPage() {
             const isActive = item.id === currentFloorSelected.id;
             return (
               <Button
+                className="w-full"
                 onClick={() => setCurrentFloorSelected(item)}
                 key={`floor-item-${item.id}`}
                 variant={isActive ? "default" : "secondary"}

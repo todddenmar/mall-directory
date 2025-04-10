@@ -19,6 +19,7 @@ import { ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { floors } from "@/lib/config";
 import SectionTitle from "../custom-ui/SectionTitle";
+import LoadingComponent from "../custom-ui/LoadingComponent";
 
 function FloorPlanPublicSection() {
   const {
@@ -54,7 +55,18 @@ function FloorPlanPublicSection() {
   useEffect(() => {
     setFilteredShops(currentShops.slice(0, 3));
   }, [currentShops]);
-  if (!currentFloorSelected) return <div>No Floor Selected</div>;
+  if (!currentFloorSelected)
+    return (
+      <div>
+        <LoadingComponent message="Loading..." />
+      </div>
+    );
+  if (currentShops.length === 0)
+    return (
+      <div>
+        <LoadingComponent message="Loading Shops..." />
+      </div>
+    );
   const { imageURL, name } = currentFloorSelected;
   const floorSpots = currentShops.filter(
     (item) => item.floorID === currentFloorSelected.id

@@ -61,7 +61,7 @@ function FloorSpotPublic({ shop, isActive }: FloorSpotPublicProps) {
         </PopoverTrigger>
         <PopoverContent
           side="top"
-          className="p-2 bg-transparent shadow-none  border-none w-fit"
+          className="p-2 bg-transparent shadow-none border-none w-fit -mb-2"
         >
           <div className="animate-bounce bg-red-600 text-white rounded-full p-2">
             <ArrowDownIcon />

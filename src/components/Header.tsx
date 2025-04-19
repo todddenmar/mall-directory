@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
-import { KeyIcon, ShieldUserIcon } from "lucide-react";
+import { KeyIcon, LayersIcon, ShieldUserIcon } from "lucide-react";
 import {
   Protect,
   SignedIn,
@@ -13,7 +13,10 @@ import {
 } from "@clerk/nextjs";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "@/firebase";
+import SearchShopButton from "./buttons/SearchShopButton";
+import { usePathname } from "next/navigation";
 function Header() {
+  const pathname = usePathname();
   const { getToken, userId } = useAuth();
   const signIntoFirebaseWithClerk = async () => {
     const token = await getToken({ template: "integration_firebase" });
@@ -33,15 +36,27 @@ function Header() {
   return (
     <nav className="flex items-center gap-4 justify-between p-4 border-b w-full bg-neutral-100 z-20">
       <Link href={"/"} className="text-sm font-medium">
-        Robinsons PGDN
+        Robinsons PGDN <br /> By Todd Mendiola
       </Link>
 
-      <div className="flex items-center gap-4">
-        <div className="text-sm">By Todd Mendiola</div>
+      <div className="flex items-center gap-2">
+        <SearchShopButton />
+        <Link href={"/floors"}>
+          <Button
+            variant={pathname.includes("/floors") ? "default" : "ghost"}
+            size={"icon"}
+          >
+            <LayersIcon />
+          </Button>
+        </Link>
         <SignedIn>
           <Protect permission="org:admin:access">
             <Link href={"/admin"}>
-              <Button type="button" className="cursor-pointer">
+              <Button
+                type="button"
+                variant={pathname.includes("/admin") ? "default" : "ghost"}
+                className="cursor-pointer"
+              >
                 <ShieldUserIcon />
                 <span className="hidden sm:block">Admin</span>
               </Button>

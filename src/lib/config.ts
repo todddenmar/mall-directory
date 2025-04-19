@@ -37,6 +37,10 @@ export const DB_COLLECTION = {
   ROOT: "root",
 };
 
+export const DB_SUBCOLLECTION = {
+  PRODUCTS: "products",
+  CATEGORIES: "categories",
+};
 export const PH_PROVINCES: string[] = [
   "Abra",
   "Agusan del Norte",

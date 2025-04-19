@@ -150,3 +150,24 @@ export const getSearchResult = async ({
     };
   }
 };
+
+
+export const dbFetchSubCollections = async <T>(
+  collectionName: string,
+  documentID: string,
+  subCollectionName: string
+) => {
+  try {
+    const q = query(
+      collection(db, collectionName, documentID, subCollectionName)
+    );
+    const querySnapshot = await getDocs(q);
+    const results: T[] = querySnapshot.docs.map((doc) => doc.data() as T);
+    return { status: DB_METHOD_STATUS.SUCCESS, data: results };
+  } catch (e) {
+    return {
+      status: DB_METHOD_STATUS.ERROR,
+      message: e instanceof Error ? e.message : "An unknown error occurred",
+    };
+  }
+};

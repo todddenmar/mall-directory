@@ -1,4 +1,4 @@
-import { TShop, TTime } from "@/types";
+import { TCategory, TCoordinates, TProduct, TShop, TTime } from "@/types";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,57 +15,52 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
-import { useAppStore } from "@/lib/store";
 import { toast } from "sonner";
-import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
+import { dbSetSubCollectionDocument } from "@/queries/db-create";
+import {
+  DB_COLLECTION,
+  DB_METHOD_STATUS,
+  DB_SUBCOLLECTION,
+} from "@/lib/config";
 import LoadingComponent from "../custom-ui/LoadingComponent";
-import { dbUpdateDocument } from "@/queries/db-update";
-import SelectCategory from "../select/SelectCategory";
 import CustomCheckboxField from "../custom-ui/CustomCheckboxField";
-import { Label } from "../ui/label";
-import TimeSchedulePicker from "../custom-ui/TimeSchedulePicker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useShopStore } from "@/lib/store";
+import { dbUpdateSubCollectionDocument } from "@/queries/db-update";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
+  price: z.string().min(2).max(50),
+  compareAtPrice: z.string().optional(),
   description: z.string().optional(),
-  tags: z.string().optional(),
   mobileNumber: z.string().optional(),
 });
 
-type UpdateShopFormProps = {
-  shop: TShop;
+type UpdateProductFormProps = {
+  product: TProduct;
   setClose: () => void;
 };
-function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
-  const { currentFloorSelected, currentShops, setCurrentShops } = useAppStore();
+function UpdateProductForm({ product, setClose }: UpdateProductFormProps) {
+  const { currentProductCategories, currentShop } = useShopStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [opensAt, setOpensAt] = useState<TTime>(
-    shop.opensAt || {
-      hour: "9",
-      minute: "00",
-      period: "AM",
-    }
-  );
-  const [closesAt, setClosesAt] = useState<TTime>(
-    shop.closesAt || {
-      hour: "9",
-      minute: "00",
-      period: "PM",
-    }
-  );
-  const [isSoonToOpen, setIsSoonToOpen] = useState(false);
-
+  const [isAvailable, setIsAvailable] = useState(product.isAvailable);
   const [categoryID, setCategoryID] = useState<string | undefined>(
-    shop.categoryID
+    product.categoryID || undefined
   );
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: shop.name,
-      description: shop.description || "",
-      tags: shop.tags || "",
-      mobileNumber: shop.mobileNumber || "",
+      name: product.name,
+      price: product.price.toString() || "0",
+      compareAtPrice: product.compareAtPrice?.toString() || "0",
+      description: product.description,
     },
   });
 
@@ -73,38 +68,30 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    if (!currentFloorSelected) return;
-    if (!categoryID) {
-      toast.error("Category required");
+    if (!currentShop) {
+      console.log("shop not found");
       return;
     }
     setIsLoading(true);
-    const { name, description, tags, mobileNumber } = values;
-    const udpates = {
+    const { name, description, price, compareAtPrice } = values;
+    const updates = {
+      categoryID: categoryID || null,
       name: name.trim(),
       description: description,
-      tags: tags,
-      categoryID,
-      mobileNumber: mobileNumber?.trim(),
-      opensAt,
-      closesAt,
-      isSoonToOpen,
+      price: parseInt(price || "0"),
+      compareAtPrice: parseInt(compareAtPrice || "0"),
+      isAvailable,
     };
-    const updatedShop: TShop = {
-      ...shop,
-      ...udpates,
-    };
-    const res = await dbUpdateDocument(
+
+    const res = await dbUpdateSubCollectionDocument(
       DB_COLLECTION.SHOPS,
-      updatedShop.id,
-      udpates
+      currentShop.id,
+      DB_SUBCOLLECTION.PRODUCTS,
+      product.id,
+      updates
     );
     if (res.status === DB_METHOD_STATUS.SUCCESS) {
-      const updatedShops = currentShops.map((item) =>
-        item.id === shop.id ? updatedShop : item
-      );
-      setCurrentShops(updatedShops);
-      toast.success("Shop updated successfully!");
+      toast.success("Product updated successfully!");
     } else {
       toast.error(res.message);
     }
@@ -115,11 +102,21 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="space-y-4">
-          <SelectCategory
-            label="Category"
-            value={categoryID}
-            onChange={setCategoryID}
-          />
+          <Select value={categoryID} onValueChange={setCategoryID}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {currentProductCategories.map((item) => {
+                return (
+                  <SelectItem key={`category-item-${item.id}`} value={item.id}>
+                    {item.name}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+
           <FormField
             control={form.control}
             name="name"
@@ -127,7 +124,7 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Shop name" {...field} />
+                  <Input placeholder="Product/Service name" {...field} />
                 </FormControl>
                 <FormDescription>
                   This is the public display name.
@@ -155,33 +152,44 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
           />
           <FormField
             control={form.control}
-            name="tags"
+            name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tags</FormLabel>
+                <FormLabel>Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="drinks, food, etc" {...field} />
+                  <Input type="number" placeholder="Price" {...field} />
                 </FormControl>
-                <FormDescription>Please split items by comma.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="compareAtPrice"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Compare At Price</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Compare at price"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  This will be the price that will be compared to the selling
+                  price
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <CustomCheckboxField
-            label="Is soon to open"
-            value={isSoonToOpen}
-            onChange={setIsSoonToOpen}
-            id="soon-to-open"
+            label="Is available"
+            value={isAvailable}
+            onChange={setIsAvailable}
+            id="out-of-stock"
           />
-
-          <div className="grid gap-2">
-            <Label>Opens at</Label>
-            <TimeSchedulePicker value={opensAt} onChange={setOpensAt} />
-          </div>
-          <div className="grid gap-2">
-            <Label>Closes at</Label>
-            <TimeSchedulePicker value={closesAt} onChange={setClosesAt} />
-          </div>
         </div>
         {isLoading ? (
           <LoadingComponent />
@@ -193,4 +201,4 @@ function UpdateShopForm({ setClose, shop }: UpdateShopFormProps) {
   );
 }
 
-export default UpdateShopForm;
+export default UpdateProductForm;

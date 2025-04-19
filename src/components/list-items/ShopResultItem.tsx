@@ -1,22 +1,14 @@
-import { floors } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import { TFloor, TShop } from "@/types";
+import { TShop } from "@/types";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 type ShopResultItemProps = {
   shop: TShop;
-  onClickShop: ({ shop, floor }: { shop: TShop; floor: TFloor }) => void;
 };
-function ShopResultItem({ shop, onClickShop }: ShopResultItemProps) {
-  const floorSelected = floors.find((floor) => floor.id === shop.floorID);
+function ShopResultItem({ shop }: ShopResultItemProps) {
   return (
-    <button
-      className="flex gap-4 items-center"
-      onClick={() =>
-        floorSelected ? onClickShop({ shop: shop, floor: floorSelected }) : null
-      }
-    >
+    <button className="flex gap-4 items-center">
       <div
         className={cn(
           "relative aspect-square w-[50px] border rounded-lg overflow-hidden flex flex-col justify-center items-center",

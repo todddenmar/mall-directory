@@ -37,6 +37,7 @@ export type TCategory = {
 };
 export type TShop = {
   id: string;
+  slug: string;
   categoryID?: string;
   floorID: string;
   coordinates: TCoordinates;
@@ -44,6 +45,30 @@ export type TShop = {
   description?: string;
   imageURL?: string;
   tags?: string;
+  isSoonToOpen?: boolean;
+  opensAt: TTime;
+  closesAt: TTime;
+  mobileNumber?: string;
+};
+
+export type TShopCategory = {
+  id: string;
+  name: string;
+  description?: string;
+  tags?: string;
+  icon?: ReactNode;
+};
+
+export type TProduct = {
+  id: string;
+  name: string;
+  categoryID: string | null;
+  description?: string;
+  price: number;
+  compareAtPrice?: number;
+  imageURL?: string;
+  createdAt: string;
+  isAvailable: boolean;
 };
 export type TFilePreview = File & { preview: string };
 export type TMediaFile = {

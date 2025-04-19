@@ -6,17 +6,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useAppStore } from "@/lib/store";
-import { TCategory, TFloor, TShop } from "@/types";
+import { TShopCategory } from "@/types";
 import { floors } from "@/lib/config";
+import Link from "next/link";
 
 type CategoryShopsAccordionProps = {
-  category: TCategory;
-  onClickShop: ({ shop, floor }: { shop: TShop; floor: TFloor }) => void;
+  category: TShopCategory;
 };
-function CategoryShopsAccordion({
-  category,
-  onClickShop,
-}: CategoryShopsAccordionProps) {
+function CategoryShopsAccordion({ category }: CategoryShopsAccordionProps) {
   const { currentShops } = useAppStore();
   const shopsByCategory = currentShops.filter(
     (item) => item.categoryID === category.id
@@ -28,7 +25,12 @@ function CategoryShopsAccordion({
       className="bg-white rounded-lg border px-4"
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger>{category.name}</AccordionTrigger>
+        <AccordionTrigger>
+          <span className="flex items-center gap-2">
+            {category.icon}
+            {category.name}
+          </span>
+        </AccordionTrigger>
         <AccordionContent>
           <div className="grid grid-cols-1 gap-2 ">
             {shopsByCategory
@@ -38,20 +40,16 @@ function CategoryShopsAccordion({
                   (floor) => floor.id === item.floorID
                 );
                 return (
-                  <div
+                  <Link
+                    href={`/map?shop=${item.slug}`}
                     key={`shop-by-category-${item.id}`}
                     className="p-2 rounded-lg justify-between items-start w-full flex cursor-pointer hover:underline hover:text-red-500"
-                    onClick={() =>
-                      floorSelected
-                        ? onClickShop({ shop: item, floor: floorSelected })
-                        : null
-                    }
                   >
                     <div className="font-medium">{item.name}</div>
                     <div className="text-sm text-muted-foreground">
                       {floorSelected?.name}
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
           </div>

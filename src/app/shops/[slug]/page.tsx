@@ -1,28 +1,31 @@
+"use client";
+import LoadingComponent from "@/components/custom-ui/LoadingComponent";
+import { Badge } from "@/components/ui/badge";
+import { floors } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import { TShop } from "@/types";
+import _ from "lodash";
 import { ImageIcon, LayersIcon, ShapesIcon } from "lucide-react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import React from "react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { floors } from "@/lib/config";
 
-type ShopInfoCardProps = {
-  shop: TShop;
-};
-function ShopInfoCard({ shop }: ShopInfoCardProps) {
-  const { currentCategories } = useAppStore();
+function ShopPage() {
+  const params = useParams();
+  const slug = params.slug;
+  const { currentShops, currentCategories } = useAppStore();
   const getCategory = (id: string) => {
     const category = currentCategories.find((item) => item.id === id);
     return category;
   };
+  const shop = currentShops.find((item) => item.slug === slug);
   const floor = floors.find((item) => item.id === shop?.floorID);
 
+  if (!shop) return <LoadingComponent />;
+
   return (
-    <div className="p-2 space-y-2">
-      <div className="flex gap-4 shadow-md p-2 rounded-lg">
+    <div className="space-y-4 p-4">
+      <div className="flex gap-4 items-start">
         <div
           className={cn(
             "w-[80px] h-[80px] aspect-square relative border overflow-hidden rounded-2xl flex flex-col justify-center items-center ",
@@ -74,4 +77,4 @@ function ShopInfoCard({ shop }: ShopInfoCardProps) {
   );
 }
 
-export default ShopInfoCard;
+export default ShopPage;

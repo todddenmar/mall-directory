@@ -9,28 +9,33 @@ import {
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import CreateCategoryForm from "@/components/forms/CreateCategoryForm";
+import { TShop } from "@/types";
+import CreateProductForm from "@/components/forms/CreateProductForm";
 
-function CreateCategoryButton() {
+type CreateProductButtonProps = {
+  shop: TShop;
+};
+function CreateProductButton({ shop }: CreateProductButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <Button type="button" onClick={() => setIsOpen(true)}>
         <PlusIcon />
-        Create Product Category
+        Create New Product
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New Product Category</DialogTitle>
+            <DialogTitle>New Product</DialogTitle>
             <DialogDescription>
-              This will be used categorize the products
+              Please fill the required fields
             </DialogDescription>
           </DialogHeader>
-          <CreateCategoryForm setClose={() => setIsOpen(false)} />
+          <CreateProductForm shop={shop} setClose={() => setIsOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>
   );
 }
 
-export default CreateCategoryButton;
+export default CreateProductButton;

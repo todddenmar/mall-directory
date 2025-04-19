@@ -40,3 +40,25 @@ export const dbSetDocumentByDate = async <T extends DocumentData>(
     };
   }
 };
+
+
+export const dbSetSubCollectionDocument = async <T extends DocumentData>(
+  collectionName: string,
+  id: string,
+  subCollectionName: string,
+  subCollectionID: string,
+  data: T
+) => {
+  try {
+    await setDoc(
+      doc(db, collectionName, id, subCollectionName, subCollectionID),
+      data
+    );
+    return { status: DB_METHOD_STATUS.SUCCESS };
+  } catch (e) {
+    return {
+      status: DB_METHOD_STATUS.ERROR,
+      message: e instanceof Error ? e.message : "Unknown error",
+    };
+  }
+};

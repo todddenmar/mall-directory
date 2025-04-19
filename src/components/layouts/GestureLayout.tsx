@@ -1,11 +1,19 @@
+import { MoveIcon } from "lucide-react";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { Badge } from "../ui/badge";
 
-export default function GestureLayout({ children }: { children: ReactNode }) {
+export default function GestureLayout({
+  children,
+  defaultScale = 1,
+}: {
+  children: ReactNode;
+  defaultScale?: number;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const [isDragging, setIsDragging] = useState(false);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(defaultScale);
 
   // Zoom limits
   const MIN_SCALE = 0.5;
@@ -18,7 +26,7 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
   let scrollTop = 0;
 
   const initialPinchDistance = useRef(0);
-  const initialScale = useRef(1);
+  const initialScale = useRef(defaultScale);
 
   const clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max);
@@ -124,8 +132,12 @@ export default function GestureLayout({ children }: { children: ReactNode }) {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUpOrLeave}
       onMouseLeave={onMouseUpOrLeave}
-      className="w-full aspect-square md:h-fit overflow-scroll cursor-grab select-none md:border-0 md:overflow-auto bg-white"
+      className="w-full h-[400px] lg:h-fit overflow-scroll cursor-grab select-none md:border-0 md:overflow-auto bg-white relative"
     >
+      <Badge className="py-2 sticky left-5 top-5 font-medium z-30 opacity-35">
+        <MoveIcon size={16} />
+        Drag to navigate map
+      </Badge>
       <div
         ref={contentRef}
         style={{

@@ -15,11 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
-import { useAppStore } from "@/lib/store";
+import { useAppStore, useShopStore } from "@/lib/store";
 import { toast } from "sonner";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import LoadingComponent from "../custom-ui/LoadingComponent";
-import { dbUpdateDocument } from "@/queries/db-update";
+import {
+  dbUpdateDocument,
+  dbUpdateSubCollectionDocument,
+} from "@/queries/db-update";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -32,8 +35,8 @@ type UpdateCategoryFormProps = {
   setClose: () => void;
 };
 function UpdateCategoryForm({ setClose, category }: UpdateCategoryFormProps) {
-  const { currentFloorSelected, currentCategories, setCurrentCategories } =
-    useAppStore();
+  const { currentShop, currentProductCategories, setCurrentProductCategories } =
+    useShopStore();
   const [isLoading, setIsLoading] = useState(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,7 +52,7 @@ function UpdateCategoryForm({ setClose, category }: UpdateCategoryFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    if (!currentFloorSelected) return;
+    if (!currentShop) return;
     setIsLoading(true);
     const { name, description, tags } = values;
     const updates = {
@@ -61,16 +64,18 @@ function UpdateCategoryForm({ setClose, category }: UpdateCategoryFormProps) {
       ...category,
       ...updates,
     };
-    const res = await dbUpdateDocument(
+    const res = await dbUpdateSubCollectionDocument(
+      DB_COLLECTION.SHOPS,
+      currentShop.id,
       DB_COLLECTION.CATEGORIES,
       category.id,
       updates
     );
     if (res.status === DB_METHOD_STATUS.SUCCESS) {
-      const updatedCategories = currentCategories.map((item) =>
+      const updatedCategories = currentProductCategories.map((item) =>
         item.id === category.id ? updatedCategory : item
       );
-      setCurrentCategories(updatedCategories);
+      setCurrentProductCategories(updatedCategories);
       toast.success("Category updated successfully!");
     } else {
       toast.error(res.message);

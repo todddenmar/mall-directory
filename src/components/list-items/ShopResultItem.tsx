@@ -32,7 +32,9 @@ function ShopResultItem({ shop }: ShopResultItemProps) {
       </div>
       <div className="flex flex-col items-start">
         <div>{shop.name}</div>
-        <div className="capitalize">{shop.tags}</div>
+        <div className="capitalize text-sm truncate text-muted-foreground">
+          {shop.tags}
+        </div>
       </div>
     </button>
   );

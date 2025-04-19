@@ -1,4 +1,4 @@
-import { TCoordinates, TProduct, TShop, TTime } from "@/types";
+import { TProduct, TShop } from "@/types";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

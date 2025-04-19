@@ -1,4 +1,4 @@
-import { TCategory, TCoordinates, TProduct, TShop, TTime } from "@/types";
+import { TProduct } from "@/types";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
-import { dbSetSubCollectionDocument } from "@/queries/db-create";
 import {
   DB_COLLECTION,
   DB_METHOD_STATUS,

@@ -5,7 +5,6 @@ import {
   CameraIcon,
   CarIcon,
   ClapperboardIcon,
-  DogIcon,
   DumbbellIcon,
   FootprintsIcon,
   GemIcon,

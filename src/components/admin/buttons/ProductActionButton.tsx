@@ -14,20 +14,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { TCategory, TProduct } from "@/types";
+import { TProduct } from "@/types";
 import ConfirmationDialog from "@/components/custom-ui/ConfirmationDialog";
 import {
   DB_COLLECTION,
   DB_METHOD_STATUS,
   DB_SUBCOLLECTION,
 } from "@/lib/config";
-import {
-  dbDeleteDocument,
-  dbDeleteSubCollectionDocument,
-} from "@/queries/db-delete";
-import { useAppStore, useShopStore } from "@/lib/store";
+import { dbDeleteSubCollectionDocument } from "@/queries/db-delete";
+import { useShopStore } from "@/lib/store";
 import { toast } from "sonner";
-import UpdateCategoryForm from "@/components/forms/UpdateCategoryForm";
 import UpdateProductForm from "@/components/forms/UpdateProductForm";
 type ProductActionButtonProps = {
   product: TProduct;

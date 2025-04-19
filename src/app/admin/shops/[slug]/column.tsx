@@ -1,14 +1,10 @@
 "use client";
 
-import ShopActionButton from "@/components/admin/buttons/ShopActionButton";
-import ShopCategoryColumn from "@/components/admin/table-components/ShopCategoryColumn";
 import { Button } from "@/components/ui/button";
-import { floors } from "@/lib/config";
 import { TProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 import ProductCategoryColumn from "@/components/admin/table-components/ProductCategoryColumn";
 import { convertCurrency } from "@/lib/utils";
 import ProductActionButton from "@/components/admin/buttons/ProductActionButton";

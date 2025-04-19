@@ -8,7 +8,6 @@ import { useAppStore, useShopStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { TCategory, TProduct } from "@/types";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import _ from "lodash";
 import { ImageIcon, LayersIcon, ShapesIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -64,6 +63,7 @@ function AdminShopPage() {
       unsubscribeCategories();
       unsubscribeProducts();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shop]);
   if (!shop) return <LoadingComponent />;
 

@@ -93,8 +93,14 @@ function CreateShopForm({ coordinates, setClose }: CreateShopFormProps) {
   }
 
   useEffect(() => {
-    form.setValue("slug", _.kebabCase(form.getValues("name")));
-  }, [form.watch("name")]);
+    const subscription = form.watch((value, { name }) => {
+      if (name === "name" && value.name) {
+        form.setValue("slug", _.kebabCase(value.name));
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

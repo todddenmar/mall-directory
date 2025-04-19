@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import CreateCategoryForm from "@/components/forms/CreateCategoryForm";
 import { TShop } from "@/types";
 import CreateProductForm from "@/components/forms/CreateProductForm";
 

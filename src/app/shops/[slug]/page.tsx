@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { floors } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import _ from "lodash";
 import { ImageIcon, LayersIcon, ShapesIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";

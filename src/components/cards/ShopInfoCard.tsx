@@ -5,8 +5,6 @@ import { ImageIcon, LayersIcon, ShapesIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import Link from "next/link";
 import { floors } from "@/lib/config";
 
 type ShopInfoCardProps = {

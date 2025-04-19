@@ -2,7 +2,6 @@ import SectionTitle from "@/components/custom-ui/SectionTitle";
 import React from "react";
 import EmptyListLayout from "@/components/custom-ui/EmptyListLayout";
 import CategoryActionButton from "../buttons/CategoryActionButton";
-import { shopCategories } from "@/components/ShopCategories";
 import { TCategory, TProduct } from "@/types";
 import CreateCategoryButton from "../buttons/CreateCategoryButton";
 

@@ -13,6 +13,7 @@ function TimeSchedulePicker({ value, onChange }: TimeSchedulePickerProps) {
 
   useEffect(() => {
     onChange({ hour, minute, period });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hour, minute, period]);
   return (
     <div>

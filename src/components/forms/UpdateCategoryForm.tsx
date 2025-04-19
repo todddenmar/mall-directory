@@ -15,14 +15,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
-import { useAppStore, useShopStore } from "@/lib/store";
+import { useShopStore } from "@/lib/store";
 import { toast } from "sonner";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import LoadingComponent from "../custom-ui/LoadingComponent";
-import {
-  dbUpdateDocument,
-  dbUpdateSubCollectionDocument,
-} from "@/queries/db-update";
+import { dbUpdateSubCollectionDocument } from "@/queries/db-update";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
